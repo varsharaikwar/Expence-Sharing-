@@ -7,6 +7,8 @@ class CreateExpenses < ActiveRecord::Migration[5.0]
       t.decimal :amount
       t.decimal :share
 
+      t.references :creditor
+
       t.timestamps
     end
   end

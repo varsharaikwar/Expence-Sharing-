@@ -1,5 +1,4 @@
 class Debt < ApplicationRecord
-  belongs_to :purchase
-  belongs_to :user
-
+  belongs_to :expense
+  belongs_to :debtor, class_name "User"
 end
