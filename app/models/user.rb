@@ -1,4 +1,4 @@
 class User < ApplicationRecord
-  has_many :purchases, class_name "Expense"
-  has_many :debts
+  has_many :expenses
+  has_many :debts, foreign_key: "debtor_id"
 end
