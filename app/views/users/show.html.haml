@@ -4,13 +4,13 @@
     - if balance[:balance].negative?
       %p
         = @user == current_user ? 'You owe' : "#{@user.name} owes"
-        = link_to User.find(balance[:user_id]).name, user_path(User.find(balance[:user_id]))
+        = link_to (User.find(balance[:user_id]) == current_user ? 'You' : User.find(balance[:user_id]).name), user_path(User.find(balance[:user_id]))
         %span(class='red')
           ="$#{'%.02f' % balance[:balance].abs}"
 
     - else
       %p
-        = link_to User.find(balance[:user_id]).name, user_path(User.find(balance[:user_id]))
+        = link_to (User.find(balance[:user_id]) == current_user ? 'You' : User.find(balance[:user_id]).name), user_path(User.find(balance[:user_id]))
         = @user == current_user ? "owes you " : "owes #{@user.name} "
         %span(class='green')
           ="$#{'%.02f' % balance[:balance].abs}"
