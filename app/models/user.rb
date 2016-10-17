@@ -14,7 +14,7 @@ class User < ApplicationRecord
     end
   end
 
-  def balance(user)
+  def balance(user = nil)
     if user.nil? == false # if you pass in a specific user
 
       # get total amount owed to me by user
@@ -41,10 +41,13 @@ class User < ApplicationRecord
       total_balance = positive_balance + negative_balance
 
       # return user.id and an amount (decide what positive/negative numbers mean)
-      return user_id: user.id, balance: total_balance
+      return {user_id: user.id, balance: total_balance.to_f}
     else
       # run this same method, but iterate through all users
-      return 'dickall'
+      other_users = User.all.select{|user| !(user == self)}
+      other_users.map do |user|
+        self.balance(user)
+      end
     end
 
   end
