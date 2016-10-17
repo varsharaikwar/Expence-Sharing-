@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  # replace User
-  # replace user
   def index
     @users = User.all
   end

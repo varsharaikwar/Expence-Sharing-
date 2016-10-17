@@ -10,7 +10,9 @@
   %body
     %h1 Expensiv!
     .flash
-      p.notice= notice
-      p.alert = alort
+      %p.notice= notice
+      %p.alert= alert
+    %header
+      = link_to 'Sign Up!', new_user_registration_path if !current_user
 
     = yield
