@@ -10,6 +10,7 @@ class UsersController < ApplicationController
         debt.expense.user == @user
       end
     end
+    @debts = @user.debts
   end
 
   def new

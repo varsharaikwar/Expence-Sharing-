@@ -2,16 +2,18 @@
 - @user.balance.each do |balance|
   - if balance[:balance].negative?
     %p
-      You owe
+      = @user == current_user ? 'You owe' : "#{@user.name} owes"
       = link_to User.find(balance[:user_id]).name, user_path(User.find(balance[:user_id]))
       = "$#{'%.02f' % balance[:balance].abs}"
 
   - else
     %p
       = link_to User.find(balance[:user_id]).name, user_path(User.find(balance[:user_id]))
-      = "owes you $#{'%.02f' % balance[:balance].abs}"
+      = @user == current_user ? "owes you $" : "owes #{@user.name} $"
+      = '%.02f' % balance[:balance].abs
 
-%h2= "#{@user.name}'s Expenses"
+%h3
+  = @user == current_user ? "Your Expenses" : "#{@user.name}'s Expenses"
 %table
   %tr
     %th Date
@@ -34,3 +36,22 @@
       -# %td= link_to 'Destroy', expense_path(expense),
       -#       method: :delete,
       -#       data: { confirm: 'Are you sure?'}
+
+%h3 Line-Item Debts
+%table
+  %tr
+    %th Owed To
+    %th Amount
+    %th For
+    %th Date
+    %th Notes
+    %th Reconciled
+
+  - @debts.each do |debt|
+    %tr
+      %td= link_to debt.expense.user.name, user_path(debt.expense.user)
+      %td= '%.02f' % debt.amount
+      %td= link_to debt.expense.name, expense_path(debt.expense)
+      %td= debt.expense.date
+      %td= debt.expense.notes
+      %td= debt.reconciled
