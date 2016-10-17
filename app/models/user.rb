@@ -14,39 +14,38 @@ class User < ApplicationRecord
     end
   end
 
-  def horse(user)
-    "hello"
-    # if user.nil? == false # if you pass in a specific user
-    #
-    #   # get total amount owed to me by user
-    #   positive_balance = 0
-    #
-    #   they_owe = self.owed.select do |debt|
-    #     debt.debtor == user
-    #   end
-    #   they_owe.each do |debt|
-    #     positive_balance += debt.amount
-    #   end
-    #
-    #   # get total amount owed to user by me
-    #   negative_balance = 0
-    #
-    #   self_owes = user.owed.select do |debt|
-    #     debt.debtor === self
-    #   end
-    #
-    #   self_owes.each do |debt|
-    #     negative_balance -= debt.amount
-    #   end
-    #   # add together
-    #   total_balance = positive_balance + negative_balance
-    #
-    #   # return user.id and an amount (decide what positive/negative numbers mean)
-    #   return user_id: user.id, balance: total_balance
-    # else
-    #   # run this same method, but iterate through all users
-    #   return 'dickall'
-    # end
+  def balance(user)
+    if user.nil? == false # if you pass in a specific user
+
+      # get total amount owed to me by user
+      positive_balance = 0
+
+      they_owe = self.owed.select do |debt|
+        debt.debtor == user
+      end
+      they_owe.each do |debt|
+        positive_balance += debt.amount
+      end
+
+      # get total amount owed to user by me
+      negative_balance = 0
+
+      self_owes = user.owed.select do |debt|
+        debt.debtor === self
+      end
+
+      self_owes.each do |debt|
+        negative_balance -= debt.amount
+      end
+      # add together
+      total_balance = positive_balance + negative_balance
+
+      # return user.id and an amount (decide what positive/negative numbers mean)
+      return user_id: user.id, balance: total_balance
+    else
+      # run this same method, but iterate through all users
+      return 'dickall'
+    end
 
   end
 end
