@@ -54,7 +54,7 @@
 
       - @debts.each do |debt|
         %tr
-          %td= "$#{'%.02f' % debt.amount}"
+          %td{class: 'red'}= "$#{'%.02f' % debt.amount}"
           %td= link_to debt.expense.user.name, user_path(debt.expense.user)
           %td= link_to debt.expense.name, expense_path(debt.expense)
           -# %td= debt.expense.date
@@ -73,7 +73,7 @@
 
       - @ious.each do |iou|
         %tr
-          %td= "$#{'%.02f' % iou.amount}"
+          %td{class: 'green'}= "$#{'%.02f' % iou.amount}"
           %td= link_to iou.debtor.name, user_path(iou.debtor)
           %td= link_to iou.expense.name, expense_path(iou.expense)
           -# %td= iou.expense.date
