@@ -15,7 +15,10 @@ class ExpensesController < ApplicationController
   end
 
   def create
-    @expense = Expense.create(expense_params)
+    @expense = Expense.new(expense_params)
+    @expense.user_id = current_user.id
+    # @expense.reconciled = false;
+    @expense.save
 
     redirect_to expense_path(@expense)
   end
@@ -41,6 +44,6 @@ class ExpensesController < ApplicationController
   # strong params
   private
   def expense_params
-    params.require(:expense).permit(:amount, :reconciled, :expense_id, :user_id)
+    params.require(:expense).permit(:amount, :reconciled, :expense_id, :user_id, :date, :notes, :share, :name)
   end
 end

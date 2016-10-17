@@ -1,0 +1,19 @@
+= form_for @expense do |f|
+  = f.label :date
+  = f.date_field :date
+  %br
+
+  = f.label :name
+  = f.text_field :name
+  %br
+
+  = f.label :amount
+  = f.number_field :amount
+  = f.label :share
+  = f.number_field :share
+  %br
+
+  = f.label :notes
+  = f.text_field :notes
+
+  = f.submit
