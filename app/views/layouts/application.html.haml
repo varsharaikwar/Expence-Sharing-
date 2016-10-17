@@ -1,0 +1,16 @@
+!!!
+%html
+  %head
+    = csrf_meta_tags
+    %title Expensiv
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    -# %link{href: "https://fonts.googleapis.com/css?family=Eczar:400,700|Gentium+Basic:400,400i,700", rel: "stylesheet"}
+
+  %body
+    %h1 Expensiv!
+    .flash
+      p.notice= notice
+      p.alert = alort
+
+    = yield
