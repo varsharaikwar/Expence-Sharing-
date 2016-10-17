@@ -1,22 +1,21 @@
+%h2= "#{@user.name}'s Debts"
 %table
   %tr
-    %th Date
-    %th Name
-    %th Purchased By
     %th Amount
-    %th Share
+    %th Owed To
+    %th For
+    %th Date
     %th Notes
 
-  - @expenses.each do |expense|
+  - @debts.each do |debt|
     %tr
-      %td= expense.date
-      %td= link_to expense.name, expense_path(expense)
-      %td= link_to expense.user.name, user_path(expense.user)
-      %td= '%.02f' % expense.amount
-      %td= '%.02f' % expense.share
-      %td= expense.notes
-      -# %td= link_to 'Show', expense_path(expense)
-      -# %td= link_to 'Edit', edit_expense_path(expense)
-      -# %td= link_to 'Destroy', expense_path(expense),
+      %td= '%.02f' % debt.amount
+      %td= link_to debt.expense.user.name, user_path(debt.expense.user)
+      %td= link_to debt.expense.name, expense_path(debt.expense)
+      %td= debt.expense.date
+      %td= debt.expense.notes
+      -# %td= link_to 'Show', debt_path(debt)
+      -# %td= link_to 'Edit', edit_debt_path(debt)
+      -# %td= link_to 'Destroy', debt_path(debt),
       -#       method: :delete,
       -#       data: { confirm: 'Are you sure?'}

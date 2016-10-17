@@ -1,6 +1,7 @@
 class DebtsController < ApplicationController
   def index
-    @debts = Debt.all
+    @user = User.find(params[:user_id])
+    @debts = @user.debts.all
   end
 
   def show
