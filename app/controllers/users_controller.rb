@@ -5,11 +5,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @ious = Debt.all.select do |debt|
-      if debt.reconciled == false
-        debt.expense.user == @user
-      end
-    end
+    @ious = @user.owed
     @debts = @user.debts
   end
 

@@ -28,8 +28,8 @@
       %td= expense.date
       %td= link_to expense.name, expense_path(expense)
       %td= link_to expense.user.name, user_path(expense.user)
-      %td= '%.02f' % expense.amount
-      %td= '%.02f' % expense.share
+      %td= "$#{'%.02f' % expense.amount}"
+      %td= "$#{'%.02f' % expense.share}"
       %td= expense.notes
       -# %td= link_to 'Show', expense_path(expense)
       -# %td= link_to 'Edit', edit_expense_path(expense)
@@ -40,18 +40,37 @@
 %h3 Line-Item Debts
 %table
   %tr
-    %th Owed To
     %th Amount
+    %th Owed To
     %th For
-    %th Date
+    -# %th Date
     %th Notes
     %th Reconciled
 
   - @debts.each do |debt|
     %tr
+      %td= "$#{'%.02f' % debt.amount}"
       %td= link_to debt.expense.user.name, user_path(debt.expense.user)
-      %td= '%.02f' % debt.amount
       %td= link_to debt.expense.name, expense_path(debt.expense)
-      %td= debt.expense.date
+      -# %td= debt.expense.date
       %td= debt.expense.notes
       %td= debt.reconciled
+
+%h3= "Line-Item IOUs"
+%table
+  %tr
+    %th Amount
+    %th Owed By
+    %th For
+    -# %th Date
+    %th Notes
+    %th Reconciled
+
+  - @ious.each do |iou|
+    %tr
+      %td= "$#{'%.02f' % iou.amount}"
+      %td= link_to iou.debtor.name, user_path(iou.debtor)
+      %td= link_to iou.expense.name, expense_path(iou.expense)
+      -# %td= iou.expense.date
+      %td= iou.expense.notes
+      %td= iou.reconciled
