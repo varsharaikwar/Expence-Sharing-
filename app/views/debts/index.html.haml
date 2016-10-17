@@ -1,21 +1,37 @@
 %h2= "#{@user.name}'s Debts"
 %table
   %tr
-    %th Amount
     %th Owed To
+    %th Amount
     %th For
     %th Date
     %th Notes
+    %th Reconciled
 
   - @debts.each do |debt|
     %tr
-      %td= '%.02f' % debt.amount
       %td= link_to debt.expense.user.name, user_path(debt.expense.user)
+      %td= '%.02f' % debt.amount
       %td= link_to debt.expense.name, expense_path(debt.expense)
       %td= debt.expense.date
       %td= debt.expense.notes
-      -# %td= link_to 'Show', debt_path(debt)
-      -# %td= link_to 'Edit', edit_debt_path(debt)
-      -# %td= link_to 'Destroy', debt_path(debt),
-      -#       method: :delete,
-      -#       data: { confirm: 'Are you sure?'}
+      %td= debt.reconciled
+
+%h2= "Outstanding IOUs"
+%table
+  %tr
+    %th Owed By
+    %th Amount
+    %th For
+    %th Date
+    %th Notes
+    %th Reconciled
+
+  - @ious.each do |iou|
+    %tr
+      %td= link_to iou.debtor.name, user_path(iou.debtor)
+      %td= '%.02f' % iou.amount
+      %td= link_to iou.expense.name, expense_path(iou.expense)
+      %td= iou.expense.date
+      %td= iou.expense.notes
+      %td= iou.reconciled

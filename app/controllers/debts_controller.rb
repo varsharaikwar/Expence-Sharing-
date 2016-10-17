@@ -2,6 +2,12 @@ class DebtsController < ApplicationController
   def index
     @user = User.find(params[:user_id])
     @debts = @user.debts.all
+
+    @ious = Debt.all.select do |debt|
+      if debt.reconciled == false
+        debt.expense.user == @user
+      end
+    end
   end
 
   def show

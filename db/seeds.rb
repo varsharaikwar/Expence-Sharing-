@@ -20,3 +20,9 @@ matt.expenses.create!(name: "Netflix", notes: "NA", date: Date.today, amount: 9,
 
 tim.debts.create!(amount: 1000, reconciled: false, expense_id: jack.expenses.first.id)
 tim.debts.create!(amount: 3, reconciled: false, expense_id: matt.expenses.first.id)
+
+jack.debts.create!(amount: 10, reconciled: false, expense_id: tim.expenses.first.id)
+jack.debts.create!(amount: 3, reconciled: false, expense_id: matt.expenses.first.id)
+
+matt.debts.create!(amount: 1000, reconciled: false, expense_id: jack.expenses.first.id)
+matt.debts.create!(amount: 10, reconciled: false, expense_id: tim.expenses.first.id)
