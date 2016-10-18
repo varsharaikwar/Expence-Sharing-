@@ -1,24 +1,24 @@
 .summary
-  %h2 Summary:
+  %h2= "#{@user == current_user ? 'Your' : @user.name + '\'s'} Summary:"
   - @user.balance.each do |balance|
     -# I think I should take a look at refactoring this, first based on who's who, _then_ on whether it's negative or positive.
     - if balance[:balance].negative?
       %p
         - if @user == current_user
-          = "You owe #{User.find(balance[:user_id]).name} "
+          != "#{link_to 'You', user_path(current_user)} owe #{link_to User.find(balance[:user_id]).name, user_path(User.find(balance[:user_id]))} "
         - elsif User.find(balance[:user_id]) == current_user
-          = "#{@user.name} owes You "
+          != "#{@user.name} owes #{link_to 'You', user_path(current_user)} "
         - else
-          = "#{@user.name} owes #{User.find(balance[:user_id]).name} "
+          != "#{@user.name} owes #{link_to User.find(balance[:user_id]).name, user_path(User.find(balance[:user_id]))} "
         %span{class: 'red'}="$#{'%.02f' % balance[:balance].abs}"
     - elsif balance[:balance] > 0
       %p
         - if @user == current_user
-          = "#{User.find(balance[:user_id]).name} owes You "
+          != "#{link_to User.find(balance[:user_id]).name, user_path(User.find(balance[:user_id]))} owes #{link_to 'You', user_path(current_user)} "
         - elsif User.find(balance[:user_id]) == current_user
-          = "You owe #{@user.name} "
+          != "#{link_to 'You', user_path(current_user)} owe #{@user.name} "
         - else
-          = "#{User.find(balance[:user_id]).name} owes #{@user.name} "
+          != "#{link_to User.find(balance[:user_id]).name, user_path(User.find(balance[:user_id]))} owes #{@user.name} "
 
         %span{class: 'green'}="$#{'%.02f' % balance[:balance].abs}"
     - else
