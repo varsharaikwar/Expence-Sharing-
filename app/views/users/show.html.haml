@@ -6,7 +6,7 @@
       %p
         - if @user == current_user
           != "#{link_to 'You', user_path(current_user)} owe #{link_to User.find(balance[:user_id]).name, user_path(User.find(balance[:user_id]))} "
-        - elsif User.find(balance[:user_id]) == current_user
+        -# - elsif User.find(balance[:user_id]) == current_user
           != "#{@user.name} owes #{link_to 'You', user_path(current_user)} "
         - else
           != "#{@user.name} owes #{link_to User.find(balance[:user_id]).name, user_path(User.find(balance[:user_id]))} "
@@ -59,7 +59,7 @@
         %th For
         -# %th Date
         %th Notes
-        %th Reconciled
+        -# %th Reconciled
 
       - @debts.each do |debt|
         %tr
@@ -68,7 +68,7 @@
           %td= link_to debt.expense.name, expense_path(debt.expense)
           -# %td= debt.expense.date
           %td= debt.expense.notes
-          %td= debt.reconciled
+          -# %td= debt.reconciled
   .ious
     %h3= "Line-Item IOUs"
     %table
@@ -78,7 +78,7 @@
         %th For
         -# %th Date
         %th Notes
-        %th Reconciled
+        -# %th Reconciled
 
       - @ious.each do |iou|
         %tr
@@ -87,4 +87,4 @@
           %td= link_to iou.expense.name, expense_path(iou.expense)
           -# %td= iou.expense.date
           %td= iou.expense.notes
-          %td= iou.reconciled
+          -# %td= iou.reconciled

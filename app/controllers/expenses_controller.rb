@@ -16,19 +16,24 @@ class ExpensesController < ApplicationController
 
   def create
     @expense = Expense.new(expense_params)
-    @debtors = expense_params[:debtor_ids].map do |debtor_id|
-      User.find(debtor_id)
+    @debtors
+    if expense_params[:debtor_ids].nil?
+      @debtors = User.all.reject{|user| user == current_user}
+    else
+      @debtors = expense_params[:debtor_ids].map do |debtor_id|
+        User.find(debtor_id)
+      end
     end
     @expense.user_id = current_user.id
 
     # default share is an even split
     if @expense.share == nil
-      @expense.share = @expense.amount / @debtors.length
+      @expense.share = @expense.amount / (@debtors.length + 1)
     end
     @expense.save
 
 
-    # CREATE DEBT WITH EACH EXPENSE
+    # upon creation, create associated debts
     @divided_cost = (@expense.amount - @expense.share)/@debtors.length
     @debtors.each do |debtor|
       debtor.debts.create(amount: @divided_cost, expense: @expense, reconciled: false)

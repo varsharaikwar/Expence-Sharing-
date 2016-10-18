@@ -8,7 +8,7 @@
   %br
 
   = f.label :amount
-  = f.number_field :amount
+  = f.number_field :amount, value: number_to_currency(f.object.amount.to_f, delimiter: '', unit: ''), step: :any
   = f.label :share
   = f.number_field :share
   %br
@@ -17,7 +17,7 @@
   = f.text_field :notes
   %br
 
-  = f.label "Who Owes You?"
+  = f.label "Who Owes You? (defaults to all users in group)"
   %br
   = f.collection_check_boxes :debtor_ids, User.all.reject{|user| user == current_user}, :id, :name, include_hidden: false do |b|
     .collection-check-box
