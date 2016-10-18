@@ -48,6 +48,6 @@ class DebtsController < ApplicationController
   # strong params
   private
   def debt_params
-    params.require(:debt).permit(:debtor_id, :reconciled, :expense_id, :amount)
+    params.require(:debt).permit(:amount, :reconciled, :expense_id, :debtor_id)
   end
 end

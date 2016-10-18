@@ -16,11 +16,23 @@ class ExpensesController < ApplicationController
 
   def create
     @expense = Expense.new(expense_params)
+    @debtors = expense_params[:debtor_ids].map do |debtor_id|
+      User.find(debtor_id)
+    end
     @expense.user_id = current_user.id
+
+    # default share is an even split
+    if @expense.share == nil
+      @expense.share = @expense.amount / @debtors.length
+    end
     @expense.save
 
-    # Should I create the debt here?
-    @debt = Debt.new()
+
+    # CREATE DEBT WITH EACH EXPENSE
+    @divided_cost = (@expense.amount - @expense.share)/@debtors.length
+    @debtors.each do |debtor|
+      debtor.debts.create(amount: @divided_cost, expense: @expense, reconciled: false)
+    end
 
     redirect_to user_path(current_user)
   end
@@ -46,9 +58,9 @@ class ExpensesController < ApplicationController
   # strong params
   private
   def expense_params
-    params.require(:expense).permit(:amount, :reconciled, :expense_id, :user_id, :date, :notes, :share, :name)
+    params.require(:expense).permit(:amount, :expense_id, :user_id, :date, :notes, :share, :name, debtor_ids:[])
   end
   def debt_params
-    params.require(:expense).permit(:amount, :reconciled, :expense_id, :user_id, :date, :notes, :share, :name)
+    params.require(:debt).permit(:amount, :reconciled, :expense_id, :debtor_id)
   end
 end

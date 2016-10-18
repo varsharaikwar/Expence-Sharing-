@@ -15,5 +15,13 @@
 
   = f.label :notes
   = f.text_field :notes
+  %br
+
+  = f.label "Who Owes You?"
+  %br
+  = f.collection_check_boxes :debtor_ids, User.all.reject{|user| user == current_user}, :id, :name, include_hidden: false do |b|
+    .collection-check-box
+      = b.check_box
+      = b.label
 
   = f.submit
