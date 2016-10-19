@@ -1,4 +1,4 @@
-= form_for @expense do |f|
+= form_for [:group, @expense] do |f|
   = f.label :date
   = f.date_field :date
   %br
@@ -19,7 +19,7 @@
 
   = f.label "Who Owes You? (defaults to all users in group)"
   %br
-  = f.collection_check_boxes :debtor_ids, User.all.reject{|user| user == current_user}, :id, :name, include_hidden: false do |b|
+  = f.collection_check_boxes :debtor_ids, @group.users.reject{|user| user == current_user}, :id, :name, include_hidden: false do |b|
     .collection-check-box
       = b.check_box
       = b.label

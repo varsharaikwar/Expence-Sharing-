@@ -11,16 +11,16 @@ class ExpensesController < ApplicationController
   end
 
   def new
-    @group = Group.find(params[:id])
+    @group = Group.find(params[:group_id])
     @expense = @group.expenses.new
   end
 
   def create
     @group = Group.find(params[:group_id])
-    @expense = Expense.new(expense_params)
+    @expense = @group.expenses.new(expense_params)
     @debtors
     if expense_params[:debtor_ids].nil?
-      @debtors = User.all.reject{|user| user == current_user}
+      @debtors = @group.users.reject{|user| user == current_user}
     else
       @debtors = expense_params[:debtor_ids].map do |debtor_id|
         User.find(debtor_id)
@@ -53,14 +53,14 @@ class ExpensesController < ApplicationController
     @expense = Expense.find(params[:id])
     @expense.update(expense_params)
 
-    redirect_to expense_path(@expense)
+    redirect_to group_expense_path(@expense)
   end
 
   def destroy
     @expense = Expense.find(params[:id])
     @expense.destroy
 
-    redirect_to expenses_path
+    redirect_to group_expenses_path
   end
 
   # strong params
