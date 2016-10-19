@@ -18,6 +18,7 @@ gem 'coffee-rails', '~> 4.2'
 gem 'haml'
 gem 'devise'
 gem 'figaro'
+gem 'hirb'
 gem 'mailgun-ruby', require: 'mailgun'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'

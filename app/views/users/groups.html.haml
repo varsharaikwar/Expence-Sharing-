@@ -1,0 +1,4 @@
+%h2= "#{@user.name}'s Groups:"
+%ul
+  - @user.groups.each do |group|
+    %li= group.name

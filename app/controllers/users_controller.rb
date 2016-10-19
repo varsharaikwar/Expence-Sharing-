@@ -9,6 +9,10 @@ class UsersController < ApplicationController
     @debts = @user.debts
   end
 
+  def groups
+    @user = User.find(params[:id])
+  end
+
   def new
     @user = User.new
   end

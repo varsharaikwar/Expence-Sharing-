@@ -11,10 +11,12 @@ class ExpensesController < ApplicationController
   end
 
   def new
-    @expense = Expense.new
+    @group = Group.find(params[:id])
+    @expense = @group.expenses.new
   end
 
   def create
+    @group = Group.find(params[:group_id])
     @expense = Expense.new(expense_params)
     @debtors
     if expense_params[:debtor_ids].nil?
@@ -39,7 +41,8 @@ class ExpensesController < ApplicationController
       debtor.debts.create(amount: @divided_cost, expense: @expense, reconciled: false)
     end
 
-    redirect_to user_path(current_user)
+
+    redirect_to group_user_path(@group, current_user)
   end
 
   def edit

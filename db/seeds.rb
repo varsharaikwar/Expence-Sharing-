@@ -9,10 +9,17 @@
 User.destroy_all
 Debt.destroy_all
 Expense.destroy_all
+Group.destroy_all
 
-tim = User.create!(name: "Tim", email: "tim@tim.tim", password: "timtim")
-jack = User.create!(name: "Jack", email: "jack@jack.jack", password: "jackjack")
-matt = User.create!(name: "Matt", email: "matt@matt.matt", password: "mattmatt")
+house = Group.create!(name: "5227 Nebraska Ave")
+team = Group.create!(name: "Softball Team")
+
+tim = house.users.create!(name: "Tim", email: "tim@tim.tim", password: "timtim")
+jack = house.users.create!(name: "Jack", email: "jack@jack.jack", password: "jackjack")
+matt = house.users.create!(name: "Matt", email: "matt@matt.matt", password: "mattmatt")
+
+dara = team.users.create!(name: "Dara", email: "dara@dara.dara", password: "daradara")
+tim.memberships.create!(group: team)
 
 tim.expenses.create!(name: "Paper Towels", notes: "NA", date: Date.today, amount: 30, share: 10)
 jack.expenses.create!(name: "Rent", notes: "NA", date: Date.today, amount: 3000, share: 1000)
