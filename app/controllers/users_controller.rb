@@ -6,8 +6,8 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @group = Group.find(params[:group_id])
-    @ious = @user.owed
-    @debts = @user.debts
+    @ious = @user.owed(@group)
+    @debts = @user.debts.select{|debt| debt.expense.group == @group}
   end
 
   def groups

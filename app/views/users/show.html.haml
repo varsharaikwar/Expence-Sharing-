@@ -1,7 +1,7 @@
 .summary
   %h1= "#{@group.name} Expenses"
   %h2= "#{@user == current_user ? 'Your' : @user.name + '\'s'} Summary:"
-  - @user.balance.each do |balance|
+  - @user.balance(@group).each do |balance|
     -# I think I should take a look at refactoring this, first based on who's who, _then_ on whether it's negative or positive.
     - if balance[:balance].negative?
       %p
@@ -23,7 +23,6 @@
 
         %span{class: 'green'}="$#{'%.02f' % balance[:balance].abs}"
     - else
-      next
 .tables
   .expenses
     %h3
@@ -37,7 +36,7 @@
         %th Share
         %th Notes
 
-      - @user.expenses.each do |expense|
+      - @user.expenses.select{|expense| expense.group == @group}.each do |expense|
         %tr
           %td= expense.date
           %td= link_to expense.name, group_expense_path(@group, expense)

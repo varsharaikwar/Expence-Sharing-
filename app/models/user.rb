@@ -8,21 +8,22 @@ class User < ApplicationRecord
   has_many :memberships
   has_many :groups, through: :memberships
 
-  def owed
-    ious = Debt.all.select do |debt|
-      if debt.reconciled == false
-        debt.expense.user == self;
-      end
+  def owed(group)
+    self_expenses = group.expenses.select {|expense| expense.user == self}
+    group_ious = self_expenses.map do |expense|
+      expense.debts
     end
+
+    return group_ious.flatten
   end
 
-  def balance(user = nil)
+  def balance(group, user = nil)
     if user.nil? == false # if you pass in a specific user
 
       # get total amount owed to me by user
       positive_balance = 0
 
-      they_owe = self.owed.select do |debt|
+      they_owe = self.owed(group).select do |debt|
         debt.debtor == user
       end
       they_owe.each do |debt|
@@ -32,7 +33,7 @@ class User < ApplicationRecord
       # get total amount owed to user by me
       negative_balance = 0
 
-      self_owes = user.owed.select do |debt|
+      self_owes = user.owed(group).select do |debt|
         debt.debtor === self
       end
 
@@ -48,7 +49,7 @@ class User < ApplicationRecord
       # run this same method, but iterate through all users
       other_users = User.all.select{|user| !(user == self)}
       other_users.map do |user|
-        self.balance(user)
+        self.balance(group, user)
       end
     end
 

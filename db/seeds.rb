@@ -21,10 +21,13 @@ matt = house.users.create!(name: "Matt", email: "matt@matt.matt", password: "mat
 dara = team.users.create!(name: "Dara", email: "dara@dara.dara", password: "daradara")
 tim.memberships.create!(group: team)
 
-tim.expenses.create!(name: "Paper Towels", notes: "NA", date: Date.today, amount: 30, share: 10)
-jack.expenses.create!(name: "Rent", notes: "NA", date: Date.today, amount: 3000, share: 1000)
-matt.expenses.create!(name: "Netflix", notes: "NA", date: Date.today, amount: 9, share: 3)
+tim.expenses.create!(name: "Paper Towels", notes: "Bounty!", date: Date.yesterday, amount: 30, share: 10, group: house)
+jack.expenses.create!(name: "Rent", date: Date.yesterday, amount: 3000, share: 1000, group: house)
+matt.expenses.create!(name: "Netflix", date: Date.yesterday, amount: 9, share: 3, group: house)
 
+dara.expenses.create!(name: "Registration Fees", date: Date.today, amount: 150, share:75, group: team)
+
+tim.debts.create!(amount: 75, reconciled: false, expense: dara.expenses.first)
 tim.debts.create!(amount: 1000, reconciled: false, expense_id: jack.expenses.first.id)
 tim.debts.create!(amount: 3, reconciled: false, expense_id: matt.expenses.first.id)
 
