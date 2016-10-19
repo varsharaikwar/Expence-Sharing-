@@ -19,6 +19,7 @@ gem 'haml'
 gem 'devise'
 gem 'figaro'
 gem 'hirb'
+gem 'cancancan', '~> 1.10'
 gem 'mailgun-ruby', require: 'mailgun'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
