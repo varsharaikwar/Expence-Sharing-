@@ -1,6 +1,7 @@
 .summary
   %h1= "#{@group.name} Expenses"
   = link_to "Add #{@group.name} Expense", new_group_expense_path(@group)
+  = link_to "Invite a new User", edit_group_path(@group)
   %h2= "#{@user == current_user ? 'Your' : @user.name + '\'s'} Summary:"
   - @user.balance(@group).each do |balance|
     -# I think I should take a look at refactoring this, first based on who's who, _then_ on whether it's negative or positive.

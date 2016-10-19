@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   def index
     @users = User.all
+    return redirect_to user_groups_path(current_user) if current_user
   end
 
   def show
