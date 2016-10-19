@@ -12,4 +12,6 @@ Rails.application.routes.draw do
 
   get '/users/:id/groups', to: 'users#groups', as: 'user_groups'
 
+  resources :invites
+
 end

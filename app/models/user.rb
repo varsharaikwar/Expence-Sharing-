@@ -5,8 +5,12 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   has_many :expenses
   has_many :debts, foreign_key: "debtor_id"
+
   has_many :memberships
   has_many :groups, through: :memberships
+
+  has_many :invitations, class_name: :invite, foreign_key: :recipient_id
+  has_many :sent_invites, class_name: :invite, foreign_key: :sender_id
 
   def owed(group)
     self_expenses = group.expenses.select {|expense| expense.user == self}
