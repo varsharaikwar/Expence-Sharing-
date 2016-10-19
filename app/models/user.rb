@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   has_many :expenses
   has_many :debts, foreign_key: "debtor_id"
+  has_many :memberships
+  has_many :user_groups, through: :memberships
 
   def owed
     ious = Debt.all.select do |debt|
