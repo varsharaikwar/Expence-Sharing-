@@ -14,4 +14,6 @@
 - [ ] Devise
   - [ ] lock down actions based on authentication
 - [ ] Form validation with errors
-- [ ] edit expenses
+- [ ] able to edit and expenses
+  - (ugh, how will that affect debts?)
+    - everything's associated, so in theory, should be able to update without _too_ much trouble, but not sure yet
