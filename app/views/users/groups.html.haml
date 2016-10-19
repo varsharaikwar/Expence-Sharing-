@@ -1,4 +1,4 @@
 %h2= "#{@user.name}'s Groups:"
 %ul
   - @user.groups.each do |group|
-    %li= group.name
+    %li= link_to group.name, group_user_path(group, @user)

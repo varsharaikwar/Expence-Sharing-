@@ -10,6 +10,6 @@ Rails.application.routes.draw do
     resources :expenses, except: [:index]
   end
 
-  get '/users/:id/groups', to: 'users#groups'
+  get '/users/:id/groups', to: 'users#groups', as: 'user_groups'
 
 end
