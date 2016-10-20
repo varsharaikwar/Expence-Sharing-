@@ -30,7 +30,7 @@ class ExpensesController < ApplicationController
 
     # default share is an even split
     if @expense.share == nil
-      @expense.share = @expense.amount / (@debtors.length + 1)
+      @expense.share = @expense.amount / (@group.users.length)
     end
 
     # now save
