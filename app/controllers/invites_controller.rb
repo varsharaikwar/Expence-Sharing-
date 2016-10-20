@@ -5,7 +5,16 @@ class InvitesController < ApplicationController
     @invite = Invite.new(invite_params) #make a new invite
     @invite.sender_id = current_user.id # set the sender to the current user
     if @invite.save
-      InvitationMailer.new_user_invite(@invite, new_user_registration_url(invite_token: @invite.token)).deliver
+      if @invite.recipient_id != nil
+        # send mail!
+        # InviteMailer.existing_user_invite(@invite).deliver
+        @recipient = User.find(@invite.recipient_id)
+        # Add the user to the group
+        @recipient.memberships.create!(group_id: @invite.group_id)
+
+      else
+        InvitationMailer.new_user_invite(@invite, new_user_registration_url(invite_token: @invite.token)).deliver
+      end
       redirect_to group_user_path(@group, current_user)
     else
       # invitation creation failed!

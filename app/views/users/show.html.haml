@@ -1,92 +1,101 @@
-.summary
+.summaries
   %h1= "#{@group.name} Expenses"
-  = link_to "Add #{@group.name} Expense", new_group_expense_path(@group)
-  = link_to "Invite a new User", edit_group_path(@group)
+  %p= link_to "Your Group Summary", group_user_path(@group, current_user)
+  %p
+    = link_to "Add #{@group.name} Expense", new_group_expense_path(@group)
+    = link_to "Invite a new User", edit_group_path(@group)
   %h2= "#{@user == current_user ? 'Your' : @user.name + '\'s'} Summary:"
-  - @user.balance(@group).each do |balance|
-    -# I think I should take a look at refactoring this, first based on who's who, _then_ on whether it's negative or positive.
-    - if balance[:balance].negative?
-      %p
-        - if @user == current_user
-          != "#{link_to 'You', group_user_path(@group, current_user)} owe #{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} "
-        -# - elsif User.find(balance[:user_id]) == current_user
-          != "#{@user.name} owes #{link_to 'You', user_path(current_user)} "
-        - else
-          != "#{@user.name} owes #{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} "
-        %span{class: 'red'}="$#{'%.02f' % balance[:balance].abs}"
-    - elsif balance[:balance] > 0
-      %p
-        - if @user == current_user
-          != "#{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} owes #{link_to 'You', group_user_path(@group, current_user)} "
-        - elsif User.find(balance[:user_id]) == current_user
-          != "#{link_to 'You', group_user_path(@group, current_user)} owe #{@user.name} "
-        - else
-          != "#{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} owes #{@user.name} "
+  .summary
+    - @user.balance(@group).each do |balance|
+      -# I think I should take a look at refactoring this, first based on who's who, _then_ on whether it's negative or positive.
+      - if balance[:balance].negative?
+        %p
+          - if @user == current_user
+            != "#{link_to 'You', group_user_path(@group, current_user)} owe #{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} "
+          -# - elsif User.find(balance[:user_id]) == current_user
+            != "#{@user.name} owes #{link_to 'You', user_path(current_user)} "
+          - else
+            != "#{@user.name} owes #{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} "
+          %span{class: 'red'}="$#{'%.02f' % balance[:balance].abs}"
+      - elsif balance[:balance] > 0
+        %p
+          - if @user == current_user
+            != "#{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} owes #{link_to 'You', group_user_path(@group, current_user)} "
+          - elsif User.find(balance[:user_id]) == current_user
+            != "#{link_to 'You', group_user_path(@group, current_user)} owe #{@user.name} "
+          - else
+            != "#{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} owes #{@user.name} "
 
-        %span{class: 'green'}="$#{'%.02f' % balance[:balance].abs}"
-    - else
-.tables
-  .expenses
-    %h3
-      = @user == current_user ? "Your Expenses" : "#{@user.name}'s Expenses"
-    %table
-      %tr
-        %th Date
-        %th Name
-        %th Purchased By
-        %th Total Cost
-        %th Share
-        %th Notes
+          %span{class: 'green'}="$#{'%.02f' % balance[:balance].abs}"
+      - else
 
-      - @user.expenses.select{|expense| expense.group == @group}.each do |expense|
+  .tables
+    .expenses
+      %h3
+        = @user == current_user ? "Your Expenses" : "#{@user.name}'s Expenses"
+      %table
         %tr
-          %td= expense.date
-          %td= link_to expense.name, group_expense_path(@group, expense)
-          %td= link_to expense.user.name, group_user_path(@group, expense.user)
-          %td= "$#{'%.02f' % expense.amount}"
-          %td= "$#{'%.02f' % expense.share}"
-          %td= expense.notes
-          -# %td= link_to 'Show', expense_path(expense)
-          -# %td= link_to 'Edit', edit_expense_path(expense)
-          -# %td= link_to 'Destroy', expense_path(expense),
-          -#       method: :delete,
-          -#       data: { confirm: 'Are you sure?'}
+          %th Date
+          %th Name
+          %th Purchased By
+          %th Total Cost
+          %th Share
+          %th Notes
 
-  .debts
-    %h3 Line-Item Debts
-    %table
-      %tr
-        %th Amount
-        %th Owed To
-        %th For
-        -# %th Date
-        %th Notes
-        -# %th Reconciled
+        - @user.expenses.select{|expense| expense.group == @group}.each do |expense|
+          %tr
+            %td= expense.date
+            %td= link_to expense.name, group_expense_path(@group, expense), class: 'table-link'
+            %td= link_to expense.user.name, group_user_path(@group, expense.user), class: 'table-link'
+            %td= "$#{'%.02f' % expense.amount}"
+            %td= "$#{'%.02f' % expense.share}"
+            %td= expense.notes
+            -# %td= link_to 'Show', expense_path(expense)
+            -# %td= link_to 'Edit', edit_expense_path(expense)
+            -# %td= link_to 'Destroy', expense_path(expense),
+            -#       method: :delete,
+            -#       data: { confirm: 'Are you sure?'}
 
-      - @debts.each do |debt|
+    .debts
+      %h3 Line-Item Debts
+      %table
         %tr
-          %td{class: 'red'}= "$#{'%.02f' % debt.amount}"
-          %td= link_to debt.expense.user.name, group_user_path(@group, debt.expense.user)
-          %td= link_to debt.expense.name, group_expense_path(@group, debt.expense)
-          -# %td= debt.expense.date
-          %td= debt.expense.notes
-          -# %td= debt.reconciled
-  .ious
-    %h3= "Line-Item IOUs"
-    %table
-      %tr
-        %th Amount
-        %th Owed By
-        %th For
-        -# %th Date
-        %th Notes
-        -# %th Reconciled
+          %th Amount
+          %th Owed To
+          %th For
+          -# %th Date
+          %th Notes
+          -# %th Reconciled
 
-      - @ious.each do |iou|
+        - @debts.each do |debt|
+          %tr
+            %td{class: 'red'}= "$#{'%.02f' % debt.amount}"
+            %td= link_to debt.expense.user.name, group_user_path(@group, debt.expense.user), class: 'table-link'
+            %td= link_to debt.expense.name, group_expense_path(@group, debt.expense), class: 'table-link'
+            -# %td= debt.expense.date
+            %td= debt.expense.notes
+            -# %td= debt.reconciled
+    .ious
+      %h3= "Line-Item IOUs"
+      %table
         %tr
-          %td{class: 'green'}= "$#{'%.02f' % iou.amount}"
-          %td= link_to iou.debtor.name, group_user_path(@group, iou.debtor)
-          %td= link_to iou.expense.name, group_expense_path(@group, iou.expense)
-          -# %td= iou.expense.date
-          %td= iou.expense.notes
-          -# %td= iou.reconciled
+          %th Amount
+          %th Owed By
+          %th For
+          -# %th Date
+          %th Notes
+          -# %th Reconciled
+
+        - @ious.each do |iou|
+          %tr
+            %td{class: 'green'}= "$#{'%.02f' % iou.amount}"
+            %td= link_to iou.debtor.name, group_user_path(@group, iou.debtor), class: 'table-link'
+            %td= link_to iou.expense.name, group_expense_path(@group, iou.expense), class: 'table-link'
+            -# %td= iou.expense.date
+            %td= iou.expense.notes
+            -# %td= iou.reconciled
+.users
+  %h2 Other Users
+  %ul
+    -@group.users.reject{|user| user == current_user}.each do |user|
+      %li= link_to user.name, group_user_path(@group, user), class: 'user-link'

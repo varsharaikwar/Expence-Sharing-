@@ -8,7 +8,7 @@
     %link{href: "https://fonts.googleapis.com/css?family=Raleway:400,400i|Roboto+Slab:400,700", rel: "stylesheet"}
 
   %body
-    %h1 expensiv
+    %h1.title= link_to 'expensiv', :root, class: 'title-link'
     - if current_user
       %p= "Welcome #{current_user.name}"
     .flash
@@ -20,4 +20,5 @@
       = link_to 'Your Groups', user_groups_path(current_user) if current_user
       = link_to 'Sign Out', destroy_user_session_path, method: :delete if current_user
 
-    = yield
+    .view-content
+      = yield
