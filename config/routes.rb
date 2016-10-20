@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   get '/users/:id/groups', to: 'users#groups', as: 'user_groups'
 
+  delete '/groups/:group_id/users/:id/debts/delete', to: 'debts#settle', as: 'group_user_debts_delete'
+
   resources :invites
 
 end

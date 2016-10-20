@@ -12,8 +12,8 @@
         %p
           - if @user == current_user
             != "#{link_to 'You', group_user_path(@group, current_user)} owe #{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} "
-          -# - elsif User.find(balance[:user_id]) == current_user
-            != "#{@user.name} owes #{link_to 'You', user_path(current_user)} "
+          - elsif User.find(balance[:user_id]) == current_user
+            != "#{@user.name} owes #{link_to 'You', group_user_path(@group, current_user)} "
           - else
             != "#{@user.name} owes #{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} "
           %span{class: 'red'}="$#{'%.02f' % balance[:balance].abs}"
@@ -21,12 +21,15 @@
         %p
           - if @user == current_user
             != "#{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} owes #{link_to 'You', group_user_path(@group, current_user)} "
+
           - elsif User.find(balance[:user_id]) == current_user
             != "#{link_to 'You', group_user_path(@group, current_user)} owe #{@user.name} "
           - else
             != "#{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} owes #{@user.name} "
 
           %span{class: 'green'}="$#{'%.02f' % balance[:balance].abs}"
+          -# "Paid" Button
+          = link_to 'Paid', group_user_debts_delete_path(other_user: User.find(balance[:user_id])), method: :delete, class: 'settle-up' if @user == current_user
       - else
 
   .tables
@@ -85,17 +88,19 @@
           -# %th Date
           %th Notes
           -# %th Reconciled
-
-        - @ious.each do |iou|
-          %tr
-            %td{class: 'green'}= "$#{'%.02f' % iou.amount}"
-            %td= link_to iou.debtor.name, group_user_path(@group, iou.debtor), class: 'table-link'
-            %td= link_to iou.expense.name, group_expense_path(@group, iou.expense), class: 'table-link'
-            -# %td= iou.expense.date
-            %td= iou.expense.notes
-            -# %td= iou.reconciled
+        - if @ious != nil
+          - @ious.each do |iou|
+            %tr
+            - if iou != nil
+              %td{class: 'green'}= "$#{'%.02f' % iou.amount}"
+              %td= link_to iou.debtor.name, group_user_path(@group, iou.debtor), class: 'table-link'
+              %td= link_to iou.expense.name, group_expense_path(@group, iou.expense), class: 'table-link'
+              -# %td= iou.expense.date
+              %td= iou.expense.notes
+              -# %td= iou.reconciled
 .users
   %h2 Other Users
   %ul
     -@group.users.reject{|user| user == current_user}.each do |user|
       %li= link_to user.name, group_user_path(@group, user), class: 'user-link'
+  %p= link_to "Invite a User", edit_group_path(@group)

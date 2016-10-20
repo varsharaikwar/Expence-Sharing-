@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @group = Group.find(params[:group_id])
     @ious = @user.owed(@group).nil? ? nil : @user.owed(@group)
-    @debts = @user.debts.nil? ? nil : @user.debts.select{|debt| debt.expense.group == @group}
+    @debts = @user.debts.nil? ? nil : @user.debts.select{|debt| debt.expense.group == @group && debt.reconciled == false}
   end
 
   def groups

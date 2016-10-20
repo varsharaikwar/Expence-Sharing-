@@ -12,13 +12,25 @@ class User < ApplicationRecord
   has_many :invitations, class_name: :invite, foreign_key: :recipient_id
   has_many :sent_invites, class_name: :invite, foreign_key: :sender_id
 
-  def owed(group)
-    self_expenses = group.expenses.select {|expense| expense.user == self}
+  def owed(group, user = nil)
+    @user = user
+    # select all the expenses that belong to self
+    self_expenses = group.expenses.select{|expense| expense.user == self}
+
+    # gather all the debt associated with self's purchases
     group_ious = self_expenses.map do |expense|
-      expense.debts
+      # if no user was passed in
+      if @user.nil?
+        # simply return ALL the unreconciled debts that go with that expense
+        expense.debts.find_by reconciled: false
+      else
+        # otherwise, return only the debt that belongs to a specified user
+        expense.debts.find_by debtor_id: @user.id, reconciled: false
+      end
     end
 
-    return group_ious.flatten
+
+    group_ious.flatten.delete(nil)
   end
 
   def balance(group, user = nil)
@@ -27,24 +39,36 @@ class User < ApplicationRecord
 
       # get total amount owed to me by user
       positive_balance = 0
-
-      they_owe = self.owed(group).select do |debt|
-        debt.debtor == user
+      if self.owed(group, user) != nil
+        they_owe = self.owed(group, user).select{|debt| debt.reconciled == false}
+        they_owe.each{|debt| positive_balance += debt.amount}
       end
-      they_owe.each do |debt|
-        positive_balance += debt.amount
-      end
+      # if self.owed(group, user)[0].nil? == false
+      #   they_owe = self.owed(group).select do |debt|
+      #     debt.debtor == user && debt.reconciled == false
+      #   end
+      #   they_owe.each do |debt|
+      #     positive_balance += debt.amount
+      #   end
+      # end
 
       # get total amount owed to user by me
       negative_balance = 0
-
-      self_owes = user.owed(group).select do |debt|
-        debt.debtor === self
+      if user.owed(group, self) != nil
+        self_owes = user.owed(group, self).select{|debt| debt.reconciled == false}
+        self_owes.each{|debt| positive_balance += debt.amount}
       end
 
-      self_owes.each do |debt|
-        negative_balance -= debt.amount
-      end
+      # if user.owed(group)[0].nil? == false
+      #   self_owes = user.owed(group).select do |debt|
+      #     debt.debtor == self && debt.reconciled == false
+      #   end
+      #
+      #   self_owes.each do |debt|
+      #     negative_balance -= debt.amount
+      #   end
+      # end
+
       # add together
       total_balance = positive_balance + negative_balance
 
