@@ -2,18 +2,11 @@
 
 ## To Do
 ### Biggies
-- [ ] Add Group model on top of Users.
-  - [ ] joining groups with invitations
-    - group attribute: invite code --> checksum
-    - send checksum to another user
-- [ ] settling debt
-  - [ ] create migration to add `reconciled_by_creditor` and `reconciled_by_debtor` boolean to Debt table
-- [ ] styling?!
-
+- [ ] figure out why Matt's debts aren't showing up under IOUs...
+- [ ] add reconciliation table and keep track of whether expenses are all paid up or not
+- [ ] purchase show page includes the state of all debt on that expense
 ### Little Stuff
 - [ ] Devise
-  - [ ] lock down actions based on authentication
+  - [ ] lock down actions based on authentication (CanCanCan)
 - [ ] Form validation with errors
-- [ ] able to edit and expenses
-  - (ugh, how will that affect debts?)
-    - everything's associated, so in theory, should be able to update without _too_ much trouble, but not sure yet
+- [ ] what's up with the CSS specificity in this app? 
