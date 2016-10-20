@@ -88,16 +88,14 @@
           -# %th Date
           %th Notes
           -# %th Reconciled
-        - if @ious != nil
-          - @ious.each do |iou|
-            %tr
-            - if iou != nil
-              %td{class: 'green'}= "$#{'%.02f' % iou.amount}"
-              %td= link_to iou.debtor.name, group_user_path(@group, iou.debtor), class: 'table-link'
-              %td= link_to iou.expense.name, group_expense_path(@group, iou.expense), class: 'table-link'
-              -# %td= iou.expense.date
-              %td= iou.expense.notes
-              -# %td= iou.reconciled
+        - @ious.each do |iou|
+          %tr
+            %td{class: 'green'}= "$#{'%.02f' % iou.amount}"
+            %td= link_to iou.debtor.name, group_user_path(@group, iou.debtor), class: 'table-link'
+            %td= link_to iou.expense.name, group_expense_path(@group, iou.expense), class: 'table-link'
+            -# %td= iou.expense.date
+            %td= iou.expense.notes
+            -# %td= iou.reconciled
 .users
   %h2 Other Users
   %ul

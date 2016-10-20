@@ -15,21 +15,13 @@ class User < ApplicationRecord
   def owed(group, user = nil)
     # select all the expenses that belong to self
     self_expenses = group.expenses.select{|expense| expense.user == self}
+    group_ious = self_expenses.map{|expense| expense.debts}.flatten
 
-    # gather all the debt associated with self's purchases
-    group_ious = self_expenses.map do |expense|
-      # if no user was passed in
-      if user.nil?
-        # simply return ALL the unreconciled debts that go with that expense
-        expense.debts.find_by reconciled: false
-      else
-        # otherwise, return only the debt that belongs to a specified user
-        expense.debts.find_by debtor_id: user.id, reconciled: false
-      end
+    if user.nil?
+      return group_ious.select{|debt| debt.reconciled == false}
+    else
+      return group_ious.select{|debt| debt.reconciled == false && debt.debtor_id == user.id}
     end
-
-    group_ious.flatten.delete(nil)
-    group_ious
   end
 
   def balance(group, user = nil)
