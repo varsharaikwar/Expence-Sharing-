@@ -13,24 +13,23 @@ class User < ApplicationRecord
   has_many :sent_invites, class_name: :invite, foreign_key: :sender_id
 
   def owed(group, user = nil)
-    @user = user
     # select all the expenses that belong to self
     self_expenses = group.expenses.select{|expense| expense.user == self}
 
     # gather all the debt associated with self's purchases
     group_ious = self_expenses.map do |expense|
       # if no user was passed in
-      if @user.nil?
+      if user.nil?
         # simply return ALL the unreconciled debts that go with that expense
         expense.debts.find_by reconciled: false
       else
         # otherwise, return only the debt that belongs to a specified user
-        expense.debts.find_by debtor_id: @user.id, reconciled: false
+        expense.debts.find_by debtor_id: user.id, reconciled: false
       end
     end
 
-
     group_ious.flatten.delete(nil)
+    group_ious
   end
 
   def balance(group, user = nil)
@@ -39,7 +38,7 @@ class User < ApplicationRecord
 
       # get total amount owed to me by user
       positive_balance = 0
-      if self.owed(group, user) != nil
+      if self.owed(group, user)[0] != nil
         they_owe = self.owed(group, user).select{|debt| debt.reconciled == false}
         they_owe.each{|debt| positive_balance += debt.amount}
       end
@@ -54,9 +53,9 @@ class User < ApplicationRecord
 
       # get total amount owed to user by me
       negative_balance = 0
-      if user.owed(group, self) != nil
+      if user.owed(group, self)[0] != nil
         self_owes = user.owed(group, self).select{|debt| debt.reconciled == false}
-        self_owes.each{|debt| positive_balance += debt.amount}
+        self_owes.each{|debt| negative_balance -= debt.amount}
       end
 
       # if user.owed(group)[0].nil? == false
@@ -71,7 +70,6 @@ class User < ApplicationRecord
 
       # add together
       total_balance = positive_balance + negative_balance
-
       # return user.id and an amount (decide what positive/negative numbers mean)
       return {user_id: user.id, balance: total_balance.to_f}
     else
