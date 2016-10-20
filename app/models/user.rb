@@ -22,6 +22,7 @@ class User < ApplicationRecord
   end
 
   def balance(group, user = nil)
+    # puts "BALANCING"
     if user.nil? == false # if you pass in a specific user
 
       # get total amount owed to me by user

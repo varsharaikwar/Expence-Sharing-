@@ -1,4 +1,6 @@
 = form_for [:group, @expense] do |f|
+  = f.hidden_field :user, value: current_user
+
   = f.label :date
   = f.date_field :date
   %br

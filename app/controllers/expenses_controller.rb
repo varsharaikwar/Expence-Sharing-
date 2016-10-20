@@ -1,7 +1,5 @@
 class ExpensesController < ApplicationController
 
-  # replace Expense
-  # replace expense
   def index
     @expenses = Expense.all
   end
@@ -18,6 +16,9 @@ class ExpensesController < ApplicationController
   def create
     @group = Group.find(params[:group_id])
     @expense = @group.expenses.new(expense_params)
+    @expense.user_id = current_user.id
+
+    # find out who owes for the expense
     @debtors
     if expense_params[:debtor_ids].nil?
       @debtors = @group.users.reject{|user| user == current_user}
@@ -26,18 +27,25 @@ class ExpensesController < ApplicationController
         User.find(debtor_id)
       end
     end
-    @expense.user_id = current_user.id
 
     # default share is an even split
     if @expense.share == nil
       @expense.share = @expense.amount / (@debtors.length + 1)
     end
-    @expense.save
+
+    # now save
+    # WHY IS IT CREATING A NEARLY BLANK DEBT EVERY TIME THE EXPENSE IS SAVED?!?!
+    if @expense.save
+      p "EXPENSE SAVED"
+    else
+      p "EXPENSE NOT SAVED"
+    end
 
 
     # upon creation, create associated debts
     @divided_cost = (@expense.amount - @expense.share)/@debtors.length
     @debtors.each do |debtor|
+      p "ABOUT TO CREATE NEW DEBT FOR #{debtor.name}"
       debtor.debts.create(amount: @divided_cost, expense: @expense, reconciled: false)
     end
 
@@ -68,6 +76,7 @@ class ExpensesController < ApplicationController
   def expense_params
     params.require(:expense).permit(:amount, :expense_id, :user_id, :date, :notes, :share, :name, debtor_ids:[])
   end
+
   def debt_params
     params.require(:debt).permit(:amount, :reconciled, :expense_id, :debtor_id)
   end
