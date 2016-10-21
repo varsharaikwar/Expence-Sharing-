@@ -2,15 +2,15 @@
   = f.hidden_field :user, value: current_user
 
   = f.label :date
-  = f.date_field :date
+  = f.date_field :date, required: true
   %br
 
   = f.label :name
-  = f.text_field :name
+  = f.text_field :name, required: true
   %br
 
   = f.label :amount
-  = f.number_field :amount, value: number_to_currency(f.object.amount.to_f, delimiter: '', unit: ''), step: :any
+  = f.number_field :amount, value: number_to_currency(f.object.amount.to_f, delimiter: '', unit: ''), step: :any, required: true
   = f.label :share
   = f.number_field :share
   %br
