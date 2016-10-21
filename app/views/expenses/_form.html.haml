@@ -1,5 +1,5 @@
 = form_for [:group, @expense] do |f|
-  = f.hidden_field :user, value: current_user
+  = f.hidden_field :user_id, value: current_user.id
 
   = f.label :date
   = f.date_field :date, required: true

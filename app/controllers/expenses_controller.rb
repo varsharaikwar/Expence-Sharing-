@@ -23,9 +23,10 @@ class ExpensesController < ApplicationController
     if expense_params[:debtor_ids].nil?
       @debtors = @group.users.reject{|user| user == current_user}
     else
-      @debtors = expense_params[:debtor_ids].map do |debtor_id|
-        User.find(debtor_id)
-      end
+      @debtors = User.find(expense_params[:debtor_ids])
+      # @debtors = expense_params[:debtor_ids].map do |debtor_id|
+      #   User.find(debtor_id)
+      # end
     end
 
     # default share is an even split
@@ -36,19 +37,19 @@ class ExpensesController < ApplicationController
     # now save
     if @expense.save
       p "EXPENSE SAVED"
+      # upon creation, create associated debts
+      @divided_cost = (@expense.amount - @expense.share)/@debtors.length
+      @debtors.each do |debtor|
+        debtor.debts.create(amount: @divided_cost, expense: @expense, reconciled: false)
+      end
+            
+      redirect_to group_user_path(@group, current_user)
     else
       p "EXPENSE NOT SAVED"
+      render 'new'
     end
 
 
-    # upon creation, create associated debts
-    @divided_cost = (@expense.amount - @expense.share)/@debtors.length
-    @debtors.each do |debtor|
-      debtor.debts.create(amount: @divided_cost, expense: @expense, reconciled: false)
-    end
-
-
-    redirect_to group_user_path(@group, current_user)
   end
 
   def edit

@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :invitations, class_name: :invite, foreign_key: :recipient_id
   has_many :sent_invites, class_name: :invite, foreign_key: :sender_id
 
+  validates :name, :email, presence: true
+
   def owed(group, user = nil)
     # select all the expenses that belong to self
     self_expenses = group.expenses.select{|expense| expense.user == self}
