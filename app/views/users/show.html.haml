@@ -5,33 +5,10 @@
     = link_to "Add #{@group.name} Expense", new_group_expense_path(@group)
     = link_to "Invite a new User", edit_group_path(@group)
   %h2= "#{@user == current_user ? 'Your' : @user.name + '\'s'} Summary:"
+  = console
   .summary
     - @user.balance(@group).each do |balance|
-      -# I think I should take a look at refactoring this, first based on who's who, _then_ on whether it's negative or positive.
-      - if balance[:balance].negative?
-        %p
-          - if @user == current_user
-            != "#{link_to 'You', group_user_path(@group, current_user)} owe #{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} "
-          - elsif User.find(balance[:user_id]) == current_user
-            != "#{@user.name} owes #{link_to 'You', group_user_path(@group, current_user)} "
-          - else
-            != "#{@user.name} owes #{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} "
-          %span{class: 'red'}="$#{'%.02f' % balance[:balance].abs}"
-      - elsif balance[:balance] > 0
-        %p
-          - if @user == current_user
-            != "#{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} owes #{link_to 'You', group_user_path(@group, current_user)} "
-
-          - elsif User.find(balance[:user_id]) == current_user
-            != "#{link_to 'You', group_user_path(@group, current_user)} owe #{@user.name} "
-          - else
-            != "#{link_to User.find(balance[:user_id]).name, group_user_path(@group, User.find(balance[:user_id]))} owes #{@user.name} "
-
-          %span{class: 'green'}="$#{'%.02f' % balance[:balance].abs}"
-          -# "Paid" Button
-          = link_to 'Paid', group_user_debts_delete_path(other_user: User.find(balance[:user_id])), method: :delete, class: 'settle-up' if @user == current_user
-      - else
-
+      = render_balance( @group, @user, balance)
   .tables
     .expenses
       %h3
