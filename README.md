@@ -9,4 +9,9 @@
 - [ ] Devise
   - [ ] lock down actions based on authentication (CanCanCan)
 - [ ] Form validation with errors
-- [ ] what's up with the CSS specificity in this app? 
+- [ ] what's up with the CSS specificity in this app?
+
+
+### refactor
+  - [ ] look at rspec
+  - [ ] helper methods! (check out Garnet)
