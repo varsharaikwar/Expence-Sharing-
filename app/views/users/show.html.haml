@@ -5,7 +5,6 @@
     = link_to "Add #{@group.name} Expense", new_group_expense_path(@group)
     = link_to "Invite a new User", edit_group_path(@group)
   %h2= "#{@user == current_user ? 'Your' : @user.name + '\'s'} Summary:"
-  = console
   .summary
     - @user.balance(@group).each do |balance|
       = render_balance( @group, @user, balance)
