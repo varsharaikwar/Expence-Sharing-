@@ -54,7 +54,7 @@ class User < ApplicationRecord
       return {user_id: user.id, balance: total_balance.to_f}
     else
       # run this same method, but iterate through all users
-      other_users = User.all.select{|user| !(user == self)}
+      other_users = group.users.select{|user| !(user == self)}
       other_users.map do |user|
         self.balance(group, user)
       end
