@@ -16,8 +16,7 @@ I made this app during my coding bootcamp's Ruby on Rails Project Week (General 
 # Key Next Steps:
 - [ ] set up user permissions so that all groups are visible only by members (CRITICAL!)
 - [ ] keep track of reconcilliations between users (currently debts are simply wiped clean with no record)
-- [ ] Overhaul the user-interface (UI was last on my list as the deadline loomed.)
-  - [ ] consider something like Bootstrap (seems like a good fit for this project)
-  - [ ] re-think the best ways to display debts and IOUs 
+- [ ] Overhaul UI (consider a framework like Bootstrap, which might be a good fit for this project)
+- [ ] re-think the best ways to display debts and IOUs 
 - [ ] set up email invitations with MailGun (currently, email invitations are restricted to a sandbox. Once I overhaul the other features and register with a domain, I will be able to easily configure for real emailing)
  
