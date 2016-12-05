@@ -11,7 +11,7 @@ Once you've signed up for an account, you can:
 
 # Sounds great! Can I use it now?
 
-I made this app during my coding bootcamp's Ruby on Rails Project Week (General Assembly DC, WDI12). I still have a lot to do to bring this up to even a "beta" status, but most of the infrastructure is sound, and just about all of the features are working smoothly. 
+I made this app during my coding bootcamp's Ruby on Rails Project Week (General Assembly DC, WDI12). I still have a lot to do to bring this up to even a "beta" status, but most of the infrastructure is sound, and just about all of the features are working smoothly. If you're still curious, head to [expensiv.herokuapp.com](expensiv.herokuapp.com)
 
 # Key Next Steps:
 - [ ] set up user permissions so that all groups are visible only by members (CRITICAL!)
