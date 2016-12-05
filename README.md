@@ -19,5 +19,5 @@ I made this app during my coding bootcamp's Ruby on Rails Project Week (General 
 - [ ] Overhaul the user-interface (UI was last on my list as the deadline loomed.)
   - [ ] consider something like Bootstrap (seems like a good fit for this project)
   - [ ] re-think the best ways to display debts and IOUs 
-  
+- [ ] set up email invitations with MailGun (currently, email invitations are restricted to a sandbox. Once I overhaul the other features and register with a domain, I will be able to easily configure for real emailing)
  
