@@ -1,38 +1,78 @@
-<h2>Sign up</h2>
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<div id="login" class="container">
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="login well well-small">
+        <div class="center">
+          <img src="http://placehold.it/250x100&text=Logo" alt="logo"> 
+        </div>
+          <%= form_for(resource, as: resource_name, url: registration_path(resource_name), class: "login-form") do |f| %>
+            <%= devise_error_messages! %>
+            <% if @token != nil %>
+              <%= hidden_field_tag :invite_token, @token %>
+            <% end %>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+            <div class="control-group">
+              <div class="input-prepend">
+                <span class="add-on"><i class="icon-user"></i></span>
+                <%= f.email_field :email, autofocus: true, placeholder: "Email", maxlength: "255", type: "text", id: "UserUsername" %>
+              </div>
+            </div>
 
-  <% if @token != nil %>
-    <%= hidden_field_tag :invite_token, @token %>
-  <% end %>
+            <div class="control-group">
+              <div class="input-prepend">
+                <span class="add-on"><i class="icon-user"></i></span>
+                <%= f.text_field :name, autofocus: true, placeholder: "Name", maxlength: "255", type: "text", id: "UserUsername" %>
+              </div>
+            </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+            <div class="control-group">
+              <div class="input-prepend">
+                <span class="add-on"><i class="icon-lock"></i></span>
+                <% if @minimum_password_length %>
+                <em>(<%= @minimum_password_length %> characters minimum)</em>
+                <% end %>
+                <%= f.password_field :password, autocomplete: "off", placeholder: "Password", type: "password", id: "UserPassword" %>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="input-prepend">
+                <span class="add-on"><i class="icon-lock"></i></span>
+                <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "Password Confirmation", type: "password", id: "UserPassword" %>
+              </div>
+            </div>
+         
+            <div class="control-group">
+              <%= f.submit "Sign up", class: "btn btn-primary btn-large btn-block abc", type: "submit" %><br />
+              <%= link_to "Log in", new_session_path(resource_name), class: "btn-primary" %>
+            </div>
+          <% end %>
+      </div>
+    </div>
   </div>
+</div>
 
-  <div class="field">
-    <%= f.label :name %> <br />
-    <%= f.text_field :name %>
-  </div>
+<style>
+  #login img{
+    margin: 10px 0;
+  }
+  #login .center {
+    text-align: center;
+  }
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
+  #login .login {
+    max-width: 300px;
+    margin: 35px auto;
+  }
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+  #login .login-form{
+    padding:0px 25px;
+  }
+  .control-group{
+    margin-left: 29px;
+  }
+  .abc{
+    margin-left: -13px;
+  }
+</style>

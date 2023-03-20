@@ -8,15 +8,13 @@
     %link{href: "https://fonts.googleapis.com/css?family=Raleway:400,400i|Roboto+Slab:400,700", rel: "stylesheet"}
 
   %body
-    %h1.title= link_to 'expensiv', :root, class: 'title-link'
+   
     - if current_user
       %p= "Welcome #{current_user.name}"
     .flash
       %p.notice= notice
-      %p.alert= alert
     %header
-      = link_to 'Sign Up', new_user_registration_path if !current_user
-      = link_to 'Sign In', new_user_session_path if !current_user
+      
       = link_to 'Your Groups', user_groups_path(current_user) if current_user
       = link_to 'Sign Out', destroy_user_session_path, method: :delete if current_user
 

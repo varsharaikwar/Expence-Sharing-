@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :authenticate_user!
   def index
     @users = User.all
     return redirect_to user_groups_path(current_user) if current_user
@@ -43,7 +44,6 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
-  # strong params
   private
   def user_params
     params.require(:user).permit(:name, :email)

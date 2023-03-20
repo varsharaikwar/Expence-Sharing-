@@ -1,4 +1,5 @@
 class ExpensesController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     @expenses = Expense.all
@@ -18,26 +19,19 @@ class ExpensesController < ApplicationController
     @expense = @group.expenses.new(expense_params)
     @expense.user_id = current_user.id
 
-    # find out who owes for the expense
     @debtors
     if expense_params[:debtor_ids].nil?
       @debtors = @group.users.reject{|user| user == current_user}
     else
       @debtors = User.find(expense_params[:debtor_ids])
-      # @debtors = expense_params[:debtor_ids].map do |debtor_id|
-      #   User.find(debtor_id)
-      # end
     end
 
-    # default share is an even split
     if @expense.share == nil
       @expense.share = @expense.amount / (@group.users.length)
     end
 
-    # now save
     if @expense.save
       p "EXPENSE SAVED"
-      # upon creation, create associated debts
       @divided_cost = (@expense.amount - @expense.share)/@debtors.length
       @debtors.each do |debtor|
         debtor.debts.create(amount: @divided_cost, expense: @expense, reconciled: false)
@@ -70,7 +64,6 @@ class ExpensesController < ApplicationController
     redirect_to group_expenses_path
   end
 
-  # strong params
   private
   def expense_params
     params.require(:expense).permit(:amount, :expense_id, :user_id, :date, :notes, :share, :name, debtor_ids:[])

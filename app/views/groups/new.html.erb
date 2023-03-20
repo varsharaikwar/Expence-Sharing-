@@ -1,0 +1,8 @@
+<h1> Add a New Group! </h1>
+
+<%= form_for @group, class: 'new-group-form' do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name, required: true %></br>
+
+  <%= f.submit %>
+<% end %>

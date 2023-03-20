@@ -14,31 +14,6 @@ class DebtsController < ApplicationController
 
   end
 
-  # def show
-  #   @debt = Debt.find(params[:id])
-  # end
-  #
-  # def new
-  #   # @user = User.find(params[:user_id])
-  #   # @debt = @user.debt.new
-  # end
-  #
-  # def create
-  #   # @user = User.find(params[:user_id])
-  #   # @debt = @user.debt.create(debt_params)
-  # end
-  #
-  # def edit
-  #   # @debt = Debt.find(params[:id])
-  # end
-  #
-  # def update
-  #   # @debt = Debt.find(params[:id])
-  #   # @debt.update(debt_params)
-  #   #
-  #   # redirect_to debt_path(@debt)
-  # end
-  #
   def destroy
     @group = Group.find(params[:group_id])
     @user = User.find(params[:user_id])
@@ -53,7 +28,6 @@ class DebtsController < ApplicationController
     redirect_to group_user_path(@group, @user)
   end
 
-  # strong params
   private
   def debt_params
     params.require(:debt).permit(:amount, :reconciled, :expense_id, :debtor_id)

@@ -1,26 +1,61 @@
-<h2>Log in</h2>
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<div id="login" class="container">
+  <div class="row-fluid">
+    <div class="span12">
+      <div class="login well well-small">
+        <div class="center">
+          <img src="http://placehold.it/250x100&text=Logo" alt="logo"> 
+        </div>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: "login-form") do |f| %>
+          <div class="control-group">
+            <div class="input-prepend">
+              <span class="add-on"><i class="icon-user"></i></span>
+              <%= f.email_field :email, autofocus: true, maxlength: "255", type: "text", id: "UserUsername" %>
+            </div>
+          </div>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
-
-  <% if devise_mapping.rememberable? -%>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+          <div class="control-group">
+            <div class="input-prepend">
+              <span class="add-on"><i class="icon-lock"></i></span>
+              <%= f.password_field :password, autocomplete: "off", placeholder: "Password", type: "password", id: "UserPassword" %>
+            </div>
+          </div>
+         
+          <div class="control-group">
+            <%= f.submit "Log in", class: "btn btn-primary btn-large btn-block abc", type: "submit" %>
+          </div>
+          <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
+            <%= link_to "Sign up", new_registration_path(resource_name), class: "btn-primary" %><br />
+          <% end -%>
+          <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+            <%= link_to "Forgot your password?", new_password_path(resource_name), class: "btn-primary" %><br />
+          <% end -%>
+        <% end %>
+      </div>
     </div>
-  <% end -%>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
   </div>
-<% end %>
+</div>
+<style>
+  #login img{
+    margin: 10px 0;
+  }
+  #login .center {
+    text-align: center;
+  }
 
-<%= render "devise/shared/links" %>
+  #login .login {
+    max-width: 300px;
+    margin: 35px auto;
+  }
+
+  #login .login-form{
+    padding:0px 25px;
+  }
+  .control-group{
+    margin-left: 29px;
+  }
+  .abc{
+    margin-left: -13px;
+
+  }
+</style>
