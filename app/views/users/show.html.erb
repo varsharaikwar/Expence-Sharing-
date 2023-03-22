@@ -20,8 +20,9 @@
   <div class="tables">
     <div class="expenses">
       <h3>
-        <%= @user == current_user ? "Your Expenses" : "#{@user.name}'s Expenses" %>
+        <%= @user == current_user ? "Your Expenses" : "#{@user.name}'s Expenses" %> <%= link_to 'View Chart', chart_group_expenses_path(start_date: 1.month.ago.to_date, end_date: Date.today), class: "badge rounded-pill bg-danger" %>
       </h3>
+
       <table class="table table-bordered table-striped" id="ExpensesTable">
       <thead>
         <tr>
@@ -152,7 +153,6 @@
     <%= link_to "Invite a User", edit_group_path(@group) %>
   </p>
 </div>
-          
 
 <script>
   $(document).ready( function () {

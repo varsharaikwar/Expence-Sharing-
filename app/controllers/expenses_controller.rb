@@ -64,6 +64,12 @@ class ExpensesController < ApplicationController
     redirect_to group_expenses_path
   end
 
+  def chart
+  @expenses_chart_data = Expense.where(date: start_date..end_date)
+                                  .group(:date)
+                                  .sum(:amount)
+  end
+
   private
   def expense_params
     params.require(:expense).permit(:amount, :currency, :expense_id, :user_id, :category_id, :date, :notes, :share, :name, debtor_ids:[])
@@ -71,5 +77,12 @@ class ExpensesController < ApplicationController
 
   def debt_params
     params.require(:debt).permit(:amount_cents, :currency, :reconciled, :expense_id, :debtor_id)
+  end
+  def start_date
+    Date.parse(params[:start_date]) rescue 1.month.ago.to_date
+  end
+
+  def end_date
+    Date.parse(params[:end_date]) rescue Date.today
   end
 end
