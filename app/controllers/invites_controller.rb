@@ -10,7 +10,7 @@ class InvitesController < ApplicationController
         @recipient.memberships.create!(group_id: @invite.group_id)
 
       else
-        InvitationMailer.new_user_invite(@invite, new_user_registration_url(invite_token: @invite.token)).deliver
+        InvitationMailer.new_user_invite(@invite, @group, current_user, new_user_registration_url(invite_token: @invite.token)).deliver
       end
       redirect_to group_user_path(@group, current_user)
     else
@@ -24,3 +24,5 @@ class InvitesController < ApplicationController
   end
 
 end
+
+

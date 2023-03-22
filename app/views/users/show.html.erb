@@ -23,8 +23,7 @@
         <%= @user == current_user ? "Your Expenses" : "#{@user.name}'s Expenses" %> <%= link_to 'View Chart', chart_group_expenses_path(start_date: 1.month.ago.to_date, end_date: Date.today), class: "badge rounded-pill bg-danger" %>
       </h3>
 
-      <table class="table table-bordered table-striped" id="ExpensesTable">
-      <thead>
+      <table class="table table-bordered table-striped display nowrap " id="ExpensesTable" style="width:100%"  data-page-length='50'>      <thead>
         <tr>
           <th>Purchased By</th>
           <th>Name</th>
@@ -155,14 +154,12 @@
 </div>
 
 <script>
-  $(document).ready( function () {
-    
-      $('#ExpensesTable').DataTable({
-          responsive: true,
-          language: { search: "", searchPlaceholder: "Search..." },
-          dom: "<'row'<'col-sm-3'f><'col-sm-3'l><'col-sm-6'p>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-      });
-    } );
+$(document).ready( function () {
+  
+$('#ExpensesTable').DataTable({
+        responsive: true,
+        scrollX: true,
+        language: { search: "", searchPlaceholder: "Search..." }
+                  });
+} );
 </script>
