@@ -1,0 +1,168 @@
+<div class="summaries">
+  <h1>
+    <%= "#{@group.name} Expenses" %>
+  </h1>
+  <p>
+    <%= link_to "Your Group Summary", group_user_path(@group, current_user) %>
+  </p>
+  <p>
+    <%= link_to "Add #{@group.name} Expense", new_group_expense_path(@group) %>
+    <%= link_to "Invite a new User", edit_group_path(@group) %>
+  </p>
+  <h2>
+    <%= "#{@user == current_user ? 'Your' : @user.name + '\'s'} Summary:" %>
+  </h2>
+  <div class="summary">
+    <% @user.balance(@group).each do |balance| %>
+      <%= render_balance( @group, @user, balance) %>
+    <% end %>
+  </div>
+  <div class="tables">
+    <div class="expenses">
+      <h3>
+        <%= @user == current_user ? "Your Expenses" : "#{@user.name}'s Expenses" %>
+      </h3>
+      <table class="table table-bordered table-striped" id="ExpensesTable">
+      <thead>
+        <tr>
+          <th>Purchased By</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Total Cost</th>
+          <th>Share</th>
+          <th>Date</th>
+          <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @user.expenses.select{|expense| expense.group == @group}.each do |expense| %>
+          <tr>
+            <td>
+              <%= link_to expense.user.name, group_user_path(@group, expense.user), class: '' %>
+            </td>
+            <td>
+              <%= link_to expense.name, group_expense_path(@group, expense), class: '' %>
+            </td>
+            <td>
+              <%= expense.category.item %>
+            </td>
+            <td class = "total_expense">
+              <%= expense.currency %> <%= expense.amount %>
+            </td>
+            <td class = "share_expense">
+              <%= expense.currency %>
+              <%= expense.share %>
+            </td>
+            <td>
+              <%= expense.date %>
+
+            </td>
+            <td>
+              <%= expense.notes %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="debts">
+      <h3>Line-Item Debts</h3>
+      <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Amount</th>
+          <th>Owed To</th>
+          <th>For</th>
+          <% # %th Date %>
+          <th>Notes</th>
+          <% # %th Reconciled %>
+        </tr>
+        </thead>
+        <tbody>
+        <% @debts.each do |debt| %>
+          <tr>
+            <td class="red">
+              <%= "$#{'%.02f' % debt.amount}" %>
+            </td>
+            <td>
+              <%= link_to debt.expense.user.name, group_user_path(@group, debt.expense.user), class: '' %>
+            </td>
+            <td>
+              <%= link_to debt.expense.name, group_expense_path(@group, debt.expense), class: '' %>
+            </td>
+            <% # %td= debt.expense.date %>
+            <td>
+              <%= debt.expense.notes %>
+            </td>
+            <% # %td= debt.reconciled %>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="ious">
+      <h3>
+        <%= "Line-Item IOUs" %>
+      </h3>
+      <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Amount</th>
+          <th>Owed By</th>
+          <th>For</th>
+          <% # %th Date %>
+          <th>Notes</th>
+          <% # %th Reconciled %>
+        </tr>
+        </thead>
+        <tbody>
+        <% @ious.each do |iou| %>
+          <tr>
+            <td class="green">
+              <%= "$#{'%.02f' % iou.amount}" %>
+            </td>
+            <td>
+              <%= link_to iou.debtor.name, group_user_path(@group, iou.debtor), class: '' %>
+            </td>
+            <td>
+              <%= link_to iou.expense.name, group_expense_path(@group, iou.expense), class: '' %>
+            </td>
+            <% # %td= iou.expense.date %>
+            <td>
+              <%= iou.expense.notes %>
+            </td>
+            <% # %td= iou.reconciled %>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="users">
+  <h2>Other Users</h2>
+  <ul>
+    <% @group.users.reject{|user| user == current_user}.each do |user| %>
+      <li>
+        <%= link_to user.name, group_user_path(@group, user), class: 'user-link' %>
+      </li>
+    <% end %>
+  </ul>
+  <p>
+    <%= link_to "Invite a User", edit_group_path(@group) %>
+  </p>
+</div>
+          
+
+<script>
+  $(document).ready( function () {
+    
+      $('#ExpensesTable').DataTable({
+          responsive: true,
+          language: { search: "", searchPlaceholder: "Search..." },
+          dom: "<'row'<'col-sm-3'f><'col-sm-3'l><'col-sm-6'p>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+      });
+    } );
+</script>

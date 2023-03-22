@@ -1,0 +1,38 @@
+<h1>All Expenses</h1>
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Name</th>
+    <th>Purchased By</th>
+    <th>Amount</th>
+    <th>Share</th>
+    <th>Notes</th>
+  </tr>
+  <% @expenses.each do |expense| %>
+    <tr>
+      <td>
+        <%= expense.date %>
+      </td>
+      <td>
+        <%= link_to expense.name, expense_path(expense) %>
+      </td>
+      <td>
+        <%= link_to expense.user.name, user_path(expense.user) %>
+      </td>
+      <td>
+        <%= '%.02f' % expense.amount %>
+      </td>
+      <td>
+        <%= '%.02f' % expense.share %>
+      </td>
+      <td>
+        <%= expense.notes %>
+      </td>
+      <% # %td= link_to 'Show', expense_path(expense) %>
+      <% # %td= link_to 'Edit', edit_expense_path(expense) %>
+      <% # %td= link_to 'Destroy', expense_path(expense), %>
+      <% #       method: :delete, %>
+      <% #       data: { confirm: 'Are you sure?'} %>
+    </tr>
+  <% end %>
+</table>

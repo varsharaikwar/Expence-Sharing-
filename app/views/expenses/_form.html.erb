@@ -1,44 +1,52 @@
+
 <%= form_for [:group, @expense] do |f| %>
   <%= f.hidden_field :user_id, value: current_user.id %>
-  <%= f.label :date %>
-  <%= f.date_field :date, required: true %></br>
+    <!-- Email input -->
+    <div class="form-outline mb-4">
+      <%= f.label :date, class: "form-label", for: "form1Example1" %>
+      <%= f.date_field :date, id: "form1Example1", class: "form-control" %></br>
+  
+    </div>
+  
+    <!-- Password input -->
+    <div class="form-outline mb-4">
+      <%= f.label :name, class: "form-label", for: "form1Example2" %>
+      <%= f.text_field :name, id: "form1Example2", class: "form-control" %></br>
+    </div>
+   
+    <div class="form-outline mb-4">
+      <%= f.label :amount, class: "form-label", for: "form1Example2" %>
+      <%= f.text_field :amount, id: "value", class: "form-control" %></br>
+    </div>
+    
+    <div class="form-group">
+        <label>Select Currency</label>
+        <%= f.select :currency, Expense::CURRENCY_LIST, {include_blank: 'Select'}, class: "form-control dropdown" %>
+    </div>
 
-  <%= f.label :name %>
-  <%= f.text_field :name, required: true %></br>
+    <div class="form-outline mb-4">
+      <%= f.label :share, class: "form-label", for: "form1Example2" %>
+      <%= f.number_field :share, id: "form1Example2", class: "form-control" %></br>
+    </div>
 
-  <%= f.label :amount %>
-  <%= f.number_field :amount, value: number_to_currency(f.object.amount.to_f, delimiter: '', unit: ''), step: :any, required: true %>
-  <%= f.label :share %>
-  <%= f.number_field :share %></br>
-
-  <%= f.label :notes %>
-  <%= f.text_field :notes %></br>
-
-  <%= f.label "Who Owes You? (defaults to all users in group)" %></br>
-
- <%= f.collection_check_boxes :debtor_ids, @group.users.reject{|user| user == current_user}, :id, :name, include_hidden: false do |b| %>
-      <%= b.check_box %>
-      <%= b.label %>
-  <% end %></br>
-
+    <div class="form-outline mb-4">
+      <%= f.label :notes, class: "form-label", for: "form1Example2" %>
+      <%= f.text_field :notes, id: "form1Example2", class: "form-control" %></br>
+    </div>
+    
+    <div class="form-outline mb-4">
+      <%= f.label :Category, class: "form-label", for: "form1Example2" %>
+      <%= f.collection_select :category_id, Category.all,:id,:item, {include_blank: 'Select'}, class: "form-control" %> <br />
+    </div>
   <%= f.submit %>
+  <% end %>
+  <style>
+  .dropdown{
+    margin-bottom: 38px;
+  }
+  </style>
 
-
-<% end %>
-
-
-
-
-
-
-
-
-
+   
+      
   
- 
- 
-
   
-
-  
-

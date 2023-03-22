@@ -1,6 +1,0 @@
-%h2= "#{@user.name}'s Groups:"
-%ul
-  - @user.groups.each do |group|
-    %li= link_to group.name, group_user_path(group, @user)
-
-%p= link_to "Create New Group", new_group_path

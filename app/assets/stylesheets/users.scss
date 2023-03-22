@@ -15,25 +15,31 @@
   font-weight: bold;
 }
 
-
-a:not(.title-link) {
-  background-color: #6BBAEC;
-  color: white;
-  /*font-weight: bold;*/
-  text-decoration: none;
-  padding: 4px;
-  padding-left: 6px;
-  padding-right: 6px;
-  // margin-top: 5px;
-  // margin-bottom: 5px;
-  line-height: 1.2rem;
+.badge{
+  font-size: 1rem !important;
+  color: #fff;
+  padding: 8px 12px !important;
 }
 
-a:not(.title-link):hover {
-  color: #6BBAEC;
-  background-color: hsl(202, 80%, 95%);
-  transition: all 200ms;
-}
+
+// a:not(.title-link) {
+//   background-color: #6BBAEC;
+//   color: white;
+//   /*font-weight: bold;*/
+//   text-decoration: none;
+//   padding: 4px;
+//   padding-left: 6px;
+//   padding-right: 6px;
+//   // margin-top: 5px;
+//   // margin-bottom: 5px;
+//   line-height: 1.2rem;
+// }
+
+// a:not(.title-link):hover {
+//   color: #6BBAEC;
+//   background-color: hsl(202, 80%, 95%);
+//   transition: all 200ms;
+// }
 
 li {
   margin-bottom: 10px;

@@ -66,10 +66,10 @@ class ExpensesController < ApplicationController
 
   private
   def expense_params
-    params.require(:expense).permit(:amount, :expense_id, :user_id, :date, :notes, :share, :name, debtor_ids:[])
+    params.require(:expense).permit(:amount, :currency, :expense_id, :user_id, :category_id, :date, :notes, :share, :name, debtor_ids:[])
   end
 
   def debt_params
-    params.require(:debt).permit(:amount, :reconciled, :expense_id, :debtor_id)
+    params.require(:debt).permit(:amount_cents, :currency, :reconciled, :expense_id, :debtor_id)
   end
 end

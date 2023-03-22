@@ -17,7 +17,6 @@
 
 h1,h2,h3,h4 {
   font-family: 'Roboto Slab', sans-serif;
-  margin-left: -25px;
 }
 
 .title {
@@ -32,20 +31,9 @@ h1,h2,h3,h4 {
 }
 
 
-h1 {
-  margin-left: -50px;
-
-}
-
-h2 {
-  color: #89CE94;
-  margin-left: -25px;
-}
-
-
 body {
   font-family: 'Roboto Slab', sans-serif;
-  padding: 125px;
+  padding: 0;
   padding-top: 0;
   background-color: white;
 }
